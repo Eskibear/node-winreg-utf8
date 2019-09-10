@@ -1,12 +1,8 @@
+# node-winreg-utf8 #
 
-[![NPM](https://nodei.co/npm/winreg.png?downloads=true&stars=true)](https://nodei.co/npm/winreg/)
+node module that provides access to the Windows Registry through the REG commandline tool.
 
-[![Build status](https://ci.appveyor.com/api/projects/status/sxal24cfk9nlmib9?svg=true)](https://ci.appveyor.com/project/fresc81/node-winreg) [![Dependency Status](https://david-dm.org/fresc81/node-winreg.svg)](https://david-dm.org/fresc81/node-winreg) [![devDependency Status](https://david-dm.org/fresc81/node-winreg/dev-status.svg)](https://david-dm.org/fresc81/node-winreg#info=devDependencies) [![Join the chat at https://gitter.im/fresc81/node-winreg](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/fresc81/node-winreg?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-
-# node-winreg #
-
-node module that provides access to the Windows Registry through the REG commandline tool
+This repo is originally forked from [node-winreg](https://github.com/fresc81/node-winreg). Additional UTF-8 support is added now.
 
 
 ## Installation ##
@@ -14,47 +10,8 @@ node module that provides access to the Windows Registry through the REG command
 The following command installs node-winreg.
 
 ```shell
-npm install winreg 
+npm install winreg-utf8 
 ```
-
-If you prefer to install _without the development tools used to generate the HTML documentation_ (into a production environment for example) you should use the following command.
-
-```shell
-npm install winreg --production
-```
-
-Note that the development dependencies will not be installed if this package was installed as a dependency of another package.
-
-
-## Documentation ##
-
-The documentation is generated using [jsdoc](http://github.com/jsdoc3/jsdoc "jsdoc Website") with the [docstrap template](http://docstrap.github.io/docstrap "docstrap website"). You can view the API documentation [online](http://fresc81.github.io/node-winreg "online documentation"), download the latest documentation or generate it from the sourcecode.
-
-
-### Online Documentation ###
-
-View the latest docs [online](http://fresc81.github.io/node-winreg "online documentation").
-
-
-### Download Documentation ###
-
-To download the latest docs from GIT the following command is used.
-
-```shell
-npm run-script download-docs
-```
-
-
-### Generate Documentation ###
-
-To generate the docs from the sources you can use the following command.
-
-```shell
-npm run-script generate-docs
-```
-
-Note that generating the docs requires the development dependencies to be installed.
-
 
 ## Example Usage ##
 
@@ -104,9 +61,17 @@ var execSync = require('child_process').execSync;
 console.log(execSync('chcp').toString());
 console.log(execSync('chcp 65001').toString());
 ```
-
 An even better approach would be to extract and store the value returned by a call to <code>chcp</code> prior setting the console to UTF-8 and resetting the codepage after your script is done.
 
+In case where a child process doesn't inherit the changed code page, e.g. an Electron application, you can simply create the Registry object with `utf8: true` option, then `chcp 65001` is executed each time before it operates the Registry.
+```javascript
+regKey = new Registry({
+  hive: Registry.HKCU,                                        // open registry hive HKEY_CURRENT_USER
+  key:  '\\Software\\Microsoft\\Windows\\CurrentVersion\\Run' // key containing autostart programs
+  utf8: true                                                  // decode value using utf-8
+});
+// ...
+```
 
 ## License ##
 
