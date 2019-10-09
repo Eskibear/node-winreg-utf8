@@ -1,6 +1,6 @@
 {
   "name": "winreg-utf8",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "provides access to the windows registry through the REG tool, with additional unicode support.",
   "main": "lib/registry.js",
   "scripts": {
